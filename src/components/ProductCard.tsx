@@ -136,7 +136,7 @@ export function ProductCard({ product, index }: { product: ProductConfig, index:
 
           {/* Centered Description Area */}
           <div className="flex-1 flex flex-col justify-center py-4">
-            <p className="text-slate-200 text-[11px] leading-relaxed font-sans font-light">
+            <p className="text-white text-sm leading-relaxed font-sans font-normal">
               {product.description}
             </p>
           </div>
