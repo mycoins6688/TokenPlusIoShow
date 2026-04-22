@@ -69,6 +69,7 @@ export function ProductCard({ product, index }: { product: ProductConfig, index:
       className="relative group cursor-pointer h-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => window.open(product.link, '_blank', 'noopener,noreferrer')}
     >
       {/* The Card Body */}
       <motion.div 
@@ -103,24 +104,6 @@ export function ProductCard({ product, index }: { product: ProductConfig, index:
           />
         </div>
 
-        {/* Logo - Always on top and clickable */}
-        <div className="absolute top-6 left-6 z-30">
-          <motion.a
-            href={product.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            animate={{ 
-              scale: isHovered ? 0.9 : 1,
-              y: isHovered ? -2 : 0 
-            }}
-            className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/20 flex items-center justify-center transition-all duration-500 hover:bg-gold-bright/20 hover:border-gold-bright/40 cursor-pointer backdrop-blur-sm"
-            style={{ color: isHovered ? '#e5c185' : product.color }}
-            title={`访问 ${product.title} 官网`}
-          >
-            {product.iconName === 'NewApi' ? <Icon /> : <Icon size={24} strokeWidth={1.2} />}
-          </motion.a>
-        </div>
-
         {/* Main Content Area */}
         <div className="relative flex-1 p-6 flex flex-col justify-end z-10">
           <motion.div
@@ -143,29 +126,27 @@ export function ProductCard({ product, index }: { product: ProductConfig, index:
           transition={{ type: "spring", damping: 30, stiffness: 200 }}
           className="absolute inset-0 bg-black/95 backdrop-blur-xl z-20 p-6 flex flex-col border-t border-gold-muted/20"
         >
-          {/* Centered Content Area */}
-          <div className="flex-1 flex flex-col justify-center space-y-5">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-5 rounded-full bg-gold-muted shadow-[0_0_15px_rgba(197,160,89,0.6)]" />
-              <span className="text-base font-display font-black uppercase tracking-[0.15em] text-gold-bright">产品服务</span>
-            </div>
-            <p className="text-slate-200 text-xs leading-relaxed font-sans font-light">
+          {/* Top-Left Title Area */}
+          <div className="flex items-center gap-3">
+            <div className="w-1.5 h-4 rounded-full bg-gold-muted shadow-[0_0_10px_rgba(197,160,89,0.4)]" />
+            <span className="text-sm font-display font-black uppercase tracking-[0.1em] text-gold-bright">
+              {product.title}
+            </span>
+          </div>
+
+          {/* Centered Description Area */}
+          <div className="flex-1 flex flex-col justify-center py-4">
+            <p className="text-slate-200 text-[11px] leading-relaxed font-sans font-light">
               {product.description}
             </p>
           </div>
 
-          {/* Bottom Action Area (Position fixed at bottom) */}
-          <div className="pt-4">
-            <motion.a
-              href={product.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ x: 5 }}
-              className="inline-flex items-center gap-2 text-xs font-medium text-gold-bright group/link cursor-pointer"
-            >
+          {/* Bottom-Right Action Area */}
+          <div className="flex justify-end pt-2">
+            <div className="inline-flex items-center gap-2 text-[10px] font-medium text-gold-bright group/link">
               立即探索
-              <ArrowUpRight size={14} className="text-gold-muted group-hover/link:text-gold-bright transition-colors" />
-            </motion.a>
+              <ArrowUpRight size={12} className="text-gold-muted group-hover/link:text-gold-bright transition-colors" />
+            </div>
           </div>
         </motion.div>
 

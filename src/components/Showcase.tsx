@@ -70,7 +70,7 @@ export function Showcase() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
-      className="min-h-screen bg-[#050505] pt-32 pb-24 px-6 relative overflow-hidden"
+      className="min-h-screen bg-[#050505] pt-24 pb-24 px-6 relative overflow-hidden"
     >
       <Navbar />
       
@@ -91,13 +91,13 @@ export function Showcase() {
       </div>
 
       <main className="max-w-5xl mx-auto relative z-10">
-        <header className="mb-12 space-y-4">
+        <header className="mb-16 space-y-2">
           <motion.div
             initial={{ opacity: 0, x: -100, rotateY: -20 }}
             animate={{ opacity: 1, x: 0, rotateY: 0 }}
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter leading-[1.1] mb-6">
+            <h1 className="text-3xl md:text-5xl font-display font-bold tracking-tighter leading-[1.1] mb-2">
               AI Token <br />
               <span className="text-gradient-gold">资源 · 服务链接器</span>
             </h1>
@@ -107,7 +107,7 @@ export function Showcase() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg text-slate-400 max-w-xl font-sans font-light leading-relaxed"
+            className="text-sm text-slate-400 max-w-xl font-sans font-light leading-relaxed"
           >
             TokenPlus.io 致力于为全球 AI 开发者、创作者与机构提供最先进的数字资源调度工具。我们连接 AI 算力与模型服务，以卓越的性能与极致的安全，构建下一代 AI 金融生态基础设施。
           </motion.p>
