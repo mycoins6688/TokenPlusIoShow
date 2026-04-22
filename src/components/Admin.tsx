@@ -217,10 +217,14 @@ export default function Admin() {
     setIsProcessing(true);
     try {
       const { id, ...dataToUpdate } = editForm as any;
-      await updateDoc(doc(db, "products", editingId), {
+      
+      const finalUpdate = {
         ...dataToUpdate,
+        sortOrder: parseInt(String(dataToUpdate.sortOrder || 0), 10),
         updatedAt: serverTimestamp()
-      });
+      };
+
+      await updateDoc(doc(db, "products", editingId), finalUpdate);
       setEditingId(null);
       await fetchProducts();
       setStatusMsg({ type: "success", text: "修改成功" });
@@ -243,10 +247,22 @@ export default function Admin() {
     setIsProcessing(true);
     try {
       const { id, ...dataToAdd } = editForm as any;
-      await addDoc(collection(db, "products"), {
-        ...dataToAdd,
+      
+      // Strict data alignment with Security Rules
+      const finalData = {
+        title: dataToAdd.title || "新产品",
+        tagline: dataToAdd.tagline || "",
+        description: dataToAdd.description || "",
+        iconName: dataToAdd.iconName || "Cloud",
+        image: dataToAdd.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
+        color: dataToAdd.color || "#e5c185",
+        link: dataToAdd.link || "#",
+        sortOrder: parseInt(String(dataToAdd.sortOrder || 0), 10),
         updatedAt: serverTimestamp()
-      });
+      };
+
+      await addDoc(collection(db, "products"), finalData);
+      
       setIsAdding(false);
       setEditForm({});
       await fetchProducts();
