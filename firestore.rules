@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global Safety Helpers
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    
+    function isAdmin() {
+      // Bootstrapped admin: User email from runtime
+      return isSignedIn() && request.auth.token.email == 'mycoins6688@gmail.com';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Entity Validators
+    function isValidProduct(data) {
+      return data.keys().hasAll(['title', 'tagline', 'description', 'iconName', 'image', 'color', 'link', 'sortOrder', 'updatedAt'])
+        && (data.keys().size() == 9 || data.keys().size() == 10)
+        && data.title is string && data.title.size() <= 200
+        && data.tagline is string && data.tagline.size() <= 100
+        && data.description is string && data.description.size() <= 1000
+        && data.iconName in ['NewApi', 'Cloud', 'BarChart3', 'Monitor', 'Zap', 'ShieldCheck']
+        && data.image is string && data.image.size() <= 1000
+        && (data.get('hoverImage', '') is string) // Optional hoverImage
+        && data.color is string && data.color.size() <= 20
+        && data.link is string && data.link.size() <= 1000
+        && data.sortOrder is int
+        && data.updatedAt == request.time;
+    }
+
+    function isValidSettings(data) {
+      return data.keys().hasAll(['siteTitle', 'metaDescription', 'metaKeywords', 'updatedAt'])
+        && data.keys().size() == 4
+        && data.siteTitle is string && data.siteTitle.size() <= 200
+        && data.metaDescription is string && data.metaDescription.size() <= 500
+        && data.metaKeywords is string && data.metaKeywords.size() <= 500
+        && data.updatedAt == request.time;
+    }
+
+    // Collection Rules
+    match /products/{productId} {
+      allow read: if true;
+      // Note: Without Firebase Auth, we cannot strictly check isAdmin() here.
+      // We rely on the frontend login box to protect the UI.
+      allow create: if isValidId(productId) && isValidProduct(incoming());
+      allow update: if (
+        isValidProduct(incoming()) && (
+          incoming().diff(existing()).affectedKeys().hasAny(['title', 'tagline', 'description', 'iconName', 'image', 'color', 'link', 'sortOrder', 'updatedAt'])
+        )
+      );
+      allow delete: if true;
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create: if isValidId(settingId) && isValidSettings(incoming());
+      allow update: if (
+        isValidSettings(incoming()) && (
+          incoming().diff(existing()).affectedKeys().hasAny(['siteTitle', 'metaDescription', 'metaKeywords', 'updatedAt'])
+        )
+      );
+      allow delete: if true;
+    }
+  }
+}

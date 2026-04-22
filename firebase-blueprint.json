@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product or service showcased on the platform.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "tagline": {
+          "type": "string",
+          "description": "A short tagline for the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the product."
+        },
+        "iconName": {
+          "type": "string",
+          "enum": ["NewApi", "Cloud", "BarChart3", "Monitor", "Zap", "ShieldCheck"],
+          "description": "The name of the Lucide icon to display."
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the product image."
+        },
+        "color": {
+          "type": "string",
+          "description": "HEX color code for the product theme."
+        },
+        "link": {
+          "type": "string",
+          "format": "uri",
+          "description": "Destination URL for the product link."
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "Order in which the product is displayed."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last update."
+        }
+      },
+      "required": ["title", "tagline", "description", "iconName", "image", "color", "link", "sortOrder"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global site settings including SEO.",
+      "type": "object",
+      "properties": {
+        "siteTitle": {
+          "type": "string",
+          "description": "The title of the website."
+        },
+        "metaDescription": {
+          "type": "string",
+          "description": "Meta description for SEO."
+        },
+        "metaKeywords": {
+          "type": "string",
+          "description": "Meta keywords for SEO."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last update."
+        }
+      },
+      "required": ["siteTitle", "metaDescription", "metaKeywords"]
+    }
+  },
+  "firestore": {
+    "products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of products shown on the homepage."
+    },
+    "settings/{settingId}": {
+      "schema": "Settings",
+      "description": "Global settings for the application."
+    }
+  }
+}
